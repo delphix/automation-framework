@@ -32,3 +32,5 @@ environments:
       when:
         - build-failure:
           then: bookmark
+        - bookmark-complete:
+          then: undo
