@@ -1,6 +1,25 @@
-template: js_template
+template: name_of_template
 api_key: app_key_token in KMS
-ami: ami-0dfffed98347ecd
+config:
+  notes: description *optional*
+  data-sources:
+    - oracle-source *arbit-name*:
+        notes: Here are notes. *optional*
+        replica: Default *optional*
+        source: dbdhcp3 *look up refernce by name*
+        start-order: 1 *optional*
+        ami: ami-0dfffed98347ecd *optional*
+    - mssql-source:
+        include: delphix-mssql.data-source
+connectors:
+  - oracle-connector:
+      host: host_ref_in_kms
+      port: kms_ref
+      database: name_of_db_in_kms
+      username: kms_ref
+      password: kms_ref
+  - msssql-connector:
+      include: delphix-mssql.connector
 environments:
   - production:
       branch: master
@@ -8,29 +27,24 @@ environments:
   - staging:
       branch: staging
       datapod: staging-pod
-      ami: ami-2deacb3345ffed
+      connectors *overwrite*:
+          - oracle-connector:
+              database: name_of_db_in_kms
       when:
-        - push:
-          then: refresh
+        - push: refresh
   - uat:
       branch: testing
       datapod: user-testing-pod
       when:
-        - push:
-          then: refresh
-        - pull-request-create:
-          then: create
-        - pull-request-closed:
-          then: delete
+        - push: refresh
+        - pull-request-create: create
+        - pull-request-closed: delete
   - develop:
       branch: develop
       datapod: develop-pod
       when:
-        - push:
-          then: refresh
+        - push: refresh
   - all:
       when:
-        - build-failure:
-          then: bookmark
-        - bookmark-complete:
-          then: undo
+        - build-failure: bookmark
+        - bookmark-complete: undo
