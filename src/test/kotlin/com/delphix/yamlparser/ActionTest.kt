@@ -1,6 +1,6 @@
-package yamlparser.tests
+package com.delphix.yamlparser.tests
 
-import yamlparser.Action
+import com.delphix.yamlparser.Action
 import kotlin.test.assertEquals
 import org.junit.Test
 

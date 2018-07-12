@@ -1,7 +1,7 @@
-package yamlparser.tests
+package com.delphix.yamlparser.tests
 
-import yamlparser.Yaml
-import yamlparser.Environment
+import com.delphix.yamlparser.Yaml
+import com.delphix.yamlparser.Environment
 import kotlin.test.assertEquals
 import org.junit.Test
 

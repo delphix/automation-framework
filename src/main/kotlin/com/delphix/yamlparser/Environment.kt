@@ -1,4 +1,4 @@
-package yamlparser
+package com.delphix.yamlparser
 
 data class Environment(
   val name: String,
