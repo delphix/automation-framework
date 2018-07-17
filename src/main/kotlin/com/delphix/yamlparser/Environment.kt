@@ -20,7 +20,7 @@ data class Environment(
                 "$name",
                 node["$name"]["branch"]?.asText() ?: "",
                 node["$name"]["datapod"]?.asText() ?: "",
-                node["$name"]["ami"]?.asText() ?: null
+                node["$name"]["ami"]?.asText()
             )
             return environment
         }
