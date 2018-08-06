@@ -6,6 +6,8 @@ class Validator(val contents: JsonNode) {
 
     var currentPosition: String = ""
     var errors = mutableListOf<String>()
+    val allowedEvents = listOf<String>("push", "pull-request-create", "pull-request-closed", "build-failure", "bookmark-complete")
+    val allowedActions = listOf<String>("refresh", "create" ,"delete", "bookmark", "undo")
 
     fun getMessage(field:String): String {
         var message = "$currentPosition.$field"
@@ -16,11 +18,15 @@ class Validator(val contents: JsonNode) {
     }
 
     fun missing(field: String) {
-        errors.add(getMessage(field) + " is required. ")
+        errors.add(getMessage(field) + " is required.")
     }
 
     fun empty(field: String) {
-        errors.add(getMessage(field) + " can not be empty. ")
+        errors.add(getMessage(field) + " can not be empty.")
+    }
+
+    fun invalid(field: String) {
+        errors.add(getMessage(field) + " is not a valid value.")
     }
 
     fun node(node: JsonNode, name: String): Any {
@@ -32,6 +38,14 @@ class Validator(val contents: JsonNode) {
         if (field !is JsonNode) return
         if (field.isNull()) {
             empty(name)
+        }
+    }
+
+    fun dataSources(dataSources: JsonNode) {
+        for(dataSource in dataSources) {
+            val name = Mapper().getNodeName(dataSource)
+            currentPosition = "config.data-sources.$name"
+            field(dataSource["$name"], "ami")
         }
     }
 
@@ -47,13 +61,26 @@ class Validator(val contents: JsonNode) {
         }
     }
 
+    fun events(events: JsonNode) {
+        for(event in events){
+            val name = Mapper().getNodeName(event)
+            currentPosition = "$currentPosition.$name"
+            if (name !in allowedEvents) invalid(name)
+            if (event.get("$name").asText() !in allowedActions) invalid(event.get("$name").asText())
+        }
+    }
+
     fun environments(environments: JsonNode) {
         for(environment in environments){
             val name = Mapper().getNodeName(environment)
             currentPosition = "environments.$name"
-            field(environment["$name"], "branch")
-            field(environment["$name"], "datapod")
+            if (name != "all") {
+                field(environment["$name"], "branch")
+                field(environment["$name"], "datapod")
+            }
             node(environment["$name"], "when")
+            if (environment["$name"]["when"].size() == 0) empty("when")
+            events(environment["$name"]["when"])
         }
     }
 
@@ -74,7 +101,7 @@ class Validator(val contents: JsonNode) {
 
         currentPosition = "config"
         node(contents["config"], "data-sources")
-
+        dataSources(contents["config"]["data-sources"])
         connectors(contents["connectors"])
         environments(contents["environments"])
 
