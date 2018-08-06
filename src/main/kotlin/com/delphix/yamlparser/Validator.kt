@@ -95,15 +95,22 @@ class Validator(val contents: JsonNode) {
     fun validate() {
         field(contents, "template")
         field(contents, "api_key")
-        node(contents, "config")
-        node(contents, "connectors")
         node(contents, "environments")
-
-        currentPosition = "config"
-        node(contents["config"], "data-sources")
-        dataSources(contents["config"]["data-sources"])
-        connectors(contents["connectors"])
         environments(contents["environments"])
+
+        //Config has requirements if present
+        val config = contents["config"] ?: null
+        if(config is JsonNode) {
+            currentPosition = "config"
+            node(contents["config"], "data-sources")
+            dataSources(contents["config"]["data-sources"])
+        }
+
+        //Connectors have requirements if present
+        val connector = contents["connectors"] ?: null
+        if(connector is JsonNode) {
+            connectors(contents["connectors"])
+        }
 
         if(errors.count() > 0) {
             renderErrors()
