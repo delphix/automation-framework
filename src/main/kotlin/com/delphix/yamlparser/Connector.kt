@@ -13,11 +13,7 @@ data class Connector(
     companion object {
         @JvmStatic
         fun mapFromNode(node: JsonNode): Connector {
-            val it: Iterator<String> = node.fieldNames()
-            var name: String = ""
-            while (it.hasNext()) {
-                name = it.next()
-            }
+            val name = Mapper().getNodeName(node)
             val connector = Connector(
                 "$name",
                 node["$name"]["host"].asText(),

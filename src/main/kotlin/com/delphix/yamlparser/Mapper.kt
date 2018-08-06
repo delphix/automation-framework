@@ -15,7 +15,12 @@ class Mapper {
     fun mapEnvironments(environments: JsonNode): MutableList<Environment> {
         var environmentsList = mutableListOf<Environment>()
         for (environment in environments) {
-            environmentsList.add(Environment.mapFromNode(environment))
+            var actionsList = mutableListOf<Action>()
+            val name = Mapper().getNodeName(environment)
+            for(action in environment["$name"]["when"]) {
+                actionsList.add(Action.mapFromNode(action))
+            }
+            environmentsList.add(Environment.mapFromNode(environment, actionsList))
         }
         return environmentsList
     }

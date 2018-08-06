@@ -13,11 +13,7 @@ data class DataSource(
     companion object {
         @JvmStatic
         fun mapFromNode(node: JsonNode): DataSource {
-            val it: Iterator<String> = node.fieldNames()
-            var name: String = ""
-            while (it.hasNext()) {
-                name = it.next()
-            }
+            val name = Mapper().getNodeName(node)
             val dataSource = DataSource(
                 "$name",
                 node["$name"]["notes"].asText(),
