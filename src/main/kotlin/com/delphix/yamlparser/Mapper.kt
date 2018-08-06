@@ -28,6 +28,15 @@ class Mapper {
         return dataSourcesList
     }
 
+    fun getNodeName(node: JsonNode): String {
+        val it: Iterator<String> = node.fieldNames()
+        var name: String = ""
+        while (it.hasNext()) {
+            name = it.next()
+        }
+        return name
+    }
+
     fun mapConfig(config: JsonNode) : Config {
         return Config(
             config["notes"].asText(),

@@ -24,6 +24,9 @@ object Parser {
         val file = File("delphix.yaml")
         delphixYamlExists(file)
         val contents = loadFromFile(file)
+
+        Validator(contents).validate()
+
         var yaml = Mapper().mapYaml(contents)
         println(yaml)
     }
