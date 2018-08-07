@@ -6,6 +6,7 @@ import kotlin.test.assertEquals
 import org.junit.Test
 
 class YamlTest {
+    /*
     private val environment = Environment("develop", "branch", "datapod", "ami")
     private val yaml = Yaml("template", "api_key", "ami", listOf(environment));
 
@@ -21,4 +22,5 @@ class YamlTest {
     @Test fun `can get environment`() : Unit {
         assertEquals("branch", yaml.environments.get(0).branch);
     }
+    */
 }

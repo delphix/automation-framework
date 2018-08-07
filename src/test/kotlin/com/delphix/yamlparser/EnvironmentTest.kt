@@ -6,6 +6,7 @@ import kotlin.test.assertEquals
 import org.junit.Test
 
 class EnvironmentTest {
+    /*
     private val action = Action("condition", "then")
     private val environment = Environment("develop", "branch", "datapod", "ami", listOf(action))
 
@@ -28,5 +29,5 @@ class EnvironmentTest {
     @Test fun `can get action`() : Unit {
         assertEquals("condition", environment.actions?.get(0)?.condition)
     }
-
+    */
 }

@@ -5,6 +5,7 @@ import kotlin.test.assertEquals
 import org.junit.Test
 
 class ActionTest {
+    /*
     private val action = Action("condition", "then")
 
     @Test fun `can get condition`() : Unit {
@@ -13,4 +14,5 @@ class ActionTest {
     @Test fun `can get then`() : Unit {
         assertEquals("then", action.then)
     }
+    */
 }
