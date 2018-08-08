@@ -23,4 +23,10 @@ class SelfServiceContainer (
         val container = SelfServiceContainerObj.fromJson(response.getJSONObject("result"))
         return container
     }
+
+    fun refresh(ref: String) {
+        val request = mapOf("type" to "JSDataContainerRefreshParameters", "forceOption" to false)
+        val response = api.handlePost("$resource/$ref/refresh", request)
+        println(response)
+    }
 }
