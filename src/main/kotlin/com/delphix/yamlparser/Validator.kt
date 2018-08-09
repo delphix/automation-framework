@@ -112,9 +112,7 @@ class Validator(val contents: JsonNode) {
             connectors(contents["connectors"])
         }
 
-        if(errors.count() > 0) {
-            renderErrors()
-        }
+        if (errors.count() > 0) renderErrors()
     }
 
 }

@@ -18,7 +18,7 @@ connectors:
       password: kms_ref
 environments:
   - staging:
-      branch: staging
+      branch: origin/staging
       datapod: staging-pod
       data-sources:
         - oracle-source *arbit-name*:
@@ -29,15 +29,15 @@ environments:
       when:
         - push: datapod.refresh
   - uat:
-      branch: testing
+      branch: origin/testing
       datapod: test
       when:
         - push: datapod.refresh
         - pull-request-create: datapod.create
         - pull-request-closed: datapod.delete
   - develop:
-      branch: develop
-      datapod: develop-pod
+      branch: origin/develop
+      datapod: Develop
       when:
         - push: datapod.refresh
   - all:

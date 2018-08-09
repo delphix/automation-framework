@@ -24,8 +24,17 @@ class SelfServiceContainer (
         return container
     }
 
-    fun refresh(ref: String) {
+    fun getRefByName(name: String): String {
+        val containers: List<SelfServiceContainerObj> = list()
+        for (container in containers) {
+            if (container.name == name) return container.reference
+        }
+        throw IllegalArgumentException("Self Service Container '$name' does not exist.")
+    }
+
+    fun refresh(name: String) {
         val request = mapOf("type" to "JSDataContainerRefreshParameters", "forceOption" to false)
+        val ref: String = getRefByName(name)
         val response = api.handlePost("$resource/$ref/refresh", request)
         println(response)
     }
