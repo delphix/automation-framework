@@ -2,6 +2,7 @@ package com.delphix.yamlparser.sdk.repos
 
 import com.delphix.yamlparser.sdk.Api as Api
 import com.delphix.yamlparser.sdk.objects.SelfServiceContainer as SelfServiceContainerObj
+import org.json.JSONObject
 
 class SelfServiceContainer (
     var api: Api
@@ -32,10 +33,9 @@ class SelfServiceContainer (
         throw IllegalArgumentException("Self Service Container '$name' does not exist.")
     }
 
-    fun refresh(name: String) {
+    fun refresh(name: String): JSONObject {
         val request = mapOf("type" to "JSDataContainerRefreshParameters", "forceOption" to false)
         val ref: String = getRefByName(name)
-        val response = api.handlePost("$resource/$ref/refresh", request)
-        println(response)
+        return api.handlePost("$resource/$ref/refresh", request)
     }
 }
