@@ -24,23 +24,31 @@ class Runner (
         }
     }
 
-    fun runActions(environment: Environment) {
+    fun outputStatus(environment: String, event: String) {
+        var actionObj: Action = delphix.action().get(currentAction.getString("action"))
+        if (actionObj.state == "COMPLETED") {
+            println("$environment - $event: COMPLETED")
+        } else {
+            var job: Job = delphix.job().get(currentAction.getString("job"))
+            while (job.jobState == "RUNNING") {
+                println("$environment - $event: " + job.percentComplete + "% COMPLETED")
+                Thread.sleep(4000)
+                job = delphix.job().get(currentAction.getString("job"))
+            }
+            println("$environment - $event: " + job.jobState)
+        }
+    }
+
+    fun execActionPhase(environment: Environment) {
         for (action in environment.actions) {
             if (action.event == env["gitEvent"]) callDelphix(environment.datapod, action.action)
-            println(currentAction)
-            val actionObj: Action = delphix.action().get(currentAction.getString("action"))
-            if (actionObj.state == "COMPLETED") {
-                println(actionObj)
-            } else {
-                val job: Job = delphix.job().get(currentAction.getString("job"))
-                println(job)
-            }
+            outputStatus(environment.name, action.event)
         }
     }
 
     fun run() {
         for(environment in yaml.environments) {
-            if (environment.branch == env["gitBranch"]) runActions(environment)
+            if (environment.branch == env["gitBranch"]) execActionPhase(environment)
         }
     }
 }
