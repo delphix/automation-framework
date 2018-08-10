@@ -38,17 +38,34 @@ class SelfServiceContainer (
         return container
     }
 
-    fun getRefByName(name: String): String {
+    fun getContainerByName(name: String): SelfServiceContainerObj {
         val containers: List<SelfServiceContainerObj> = list()
         for (container in containers) {
-            if (container.name == name) return container.reference
+            if (container.name == name) return container
         }
         throw IllegalArgumentException("Self Service Container '$name' does not exist.")
     }
 
     fun refresh(name: String): JSONObject {
         val request = mapOf("type" to "JSDataContainerRefreshParameters", "forceOption" to false)
-        val ref: String = getRefByName(name)
+        val ref: String = getContainerByName(name).reference
         return api.handlePost("$resource/$ref/refresh", request)
+    }
+
+    fun create() {
+
+    }
+
+    fun undo(name: String): JSONObject {
+        val container: SelfServiceContainerObj = getContainerByName(name)
+        val ref: String = container.reference
+        val actionRef: String = container.lastOperation
+        val request = mapOf("type" to "JSDataContainerUndoParameters", "operation" to actionRef)
+        return api.handlePost("$resource/$ref/undo", request)
+
+    }
+
+    fun delete(name: String) {
+        val ref: String = getContainerByName(name).reference
     }
 }
