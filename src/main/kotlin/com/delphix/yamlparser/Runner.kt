@@ -20,7 +20,7 @@ class Runner (
             "datapod.create" -> println(datapod)
             "datapod.delete" -> println(datapod)
             "datapod.refresh" -> currentAction = delphix.selfServiceContainer().refresh(datapod)
-            "datapod.undo" -> println(datapod)
+            "datapod.undo" -> currentAction = delphix.selfServiceContainer().undo(datapod)
         }
     }
 
