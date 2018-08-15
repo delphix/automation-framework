@@ -3,6 +3,7 @@ package com.delphix.yamlparser.sdk
 import com.delphix.yamlparser.sdk.repos.Action as Action
 import com.delphix.yamlparser.sdk.repos.Job as Job
 import com.delphix.yamlparser.sdk.repos.SelfServiceContainer as SelfServiceContainer
+import com.delphix.yamlparser.sdk.repos.SelfServiceBookmark as SelfServiceBookmark
 import org.json.JSONObject
 
 class Delphix (
@@ -29,5 +30,9 @@ class Delphix (
 
     fun selfServiceContainer(): SelfServiceContainer {
         return SelfServiceContainer(api)
+    }
+
+    fun selfServiceBookmark(): SelfServiceBookmark {
+        return SelfServiceBookmark(api)
     }
 }

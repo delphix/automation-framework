@@ -65,7 +65,9 @@ class SelfServiceContainer (
 
     }
 
-    fun delete(name: String) {
+    fun delete(name: String): JSONObject {
         val ref: String = getContainerByName(name).reference
+        val request = mapOf("type" to "JSDataContainerDeleteParameters", "deleteDataSources" to true)
+        return api.handlePost("$resource/$ref/delete", request)
     }
 }

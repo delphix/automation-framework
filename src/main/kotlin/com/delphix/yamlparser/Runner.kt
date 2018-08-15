@@ -15,10 +15,10 @@ class Runner (
     fun callDelphix(datapod: String, event: String) {
         delphix.login(env["delphixUser"]?: "", env["delphixPass"]?: "")
         when (event){
-            "bookmark.create" -> println(datapod)
+            "bookmark.create" -> currentAction = delphix.selfServiceBookmark().create(datapod)
             "bookmark.share" -> println(datapod)
             "datapod.create" -> println(datapod)
-            "datapod.delete" -> println(datapod)
+            "datapod.delete" -> currentAction = delphix.selfServiceContainer().delete(datapod)
             "datapod.refresh" -> currentAction = delphix.selfServiceContainer().refresh(datapod)
             "datapod.undo" -> currentAction = delphix.selfServiceContainer().undo(datapod)
         }
