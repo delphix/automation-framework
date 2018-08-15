@@ -19,7 +19,7 @@ connectors:
 environments:
   - staging:
       branch: origin/staging
-      datapod: staging-pod
+      datapod: Staging
       data-sources:
         - oracle-source *arbit-name*:
             ami: ami-0dfffed98347ecd *optional*
@@ -33,13 +33,13 @@ environments:
       datapod: test
       when:
         - push: datapod.refresh
-        - pull-request-create: datapod.create
+        - pull-request-opened: datapod.create
         - pull-request-closed: datapod.delete
   - develop:
       branch: origin/develop
       datapod: Develop
       when:
-        - push: datapod.refresh
+        - push: bookmark.create
   - all:
       when:
         - build-failure: bookmark.create
