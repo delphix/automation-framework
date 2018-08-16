@@ -18,6 +18,9 @@ import com.delphix.yamlparser.sdk.objects.SelfServiceBookmark as SelfServiceBook
 import com.delphix.yamlparser.sdk.repos.SelfServiceContainer as SelfServiceContainer
 import com.delphix.yamlparser.sdk.objects.SelfServiceContainer as SelfServiceContainerObj
 import org.json.JSONObject
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 class SelfServiceBookmark (
     var api: Api
@@ -44,7 +47,10 @@ class SelfServiceBookmark (
 
     fun create(name: String): JSONObject {
         val container: SelfServiceContainerObj = SelfServiceContainer(api).getContainerByName(name)
-        val bookmark = mapOf("type" to "JSBookmark", "name" to "temp name", "branch" to container.activeBranch)
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
+        val formatted = current.format(formatter)
+        val bookmark = mapOf("type" to "JSBookmark", "name" to "DAF: $formatted", "branch" to container.activeBranch)
         val timeline = mapOf("type" to "JSTimelinePointLatestTimeInput", "sourceDataLayout" to container.reference)
         val request = mapOf("type" to "JSBookmarkCreateParameters", "bookmark" to bookmark, "timelinePointParameters" to timeline)
         return api.handlePost("$resource", request)

@@ -24,25 +24,30 @@ class Runner (
         }
     }
 
-    fun outputStatus(environment: String, event: String) {
+    fun outputStatus(environment: String, event: String, action: String) {
         var actionObj: Action = delphix.action().get(currentAction.getString("action"))
         if (actionObj.state == "COMPLETED") {
-            println("$environment - $event: COMPLETED")
+            println("-$environment: $event: $action - COMPLETED")
         } else {
             var job: Job = delphix.job().get(currentAction.getString("job"))
+            var percent: Int = 0
+            println("-$environment: $event: $action - " + percent + "% COMPLETED")
             while (job.jobState == "RUNNING") {
-                println("$environment - $event: " + job.percentComplete + "% COMPLETED")
+                if (percent !=  job.percentComplete) {
+                    println("-$environment: $event: $action - " + job.percentComplete + "% COMPLETED")
+                }
+                percent = job.percentComplete
                 Thread.sleep(4000)
                 job = delphix.job().get(currentAction.getString("job"))
             }
-            println("$environment - $event: " + job.jobState)
+            println("-$environment: $event: $action - " + job.jobState)
         }
     }
 
     fun execActionPhase(environment: Environment) {
         for (action in environment.actions) {
             if (action.event == env["gitEvent"]) callDelphix(environment.datapod, action.action)
-            outputStatus(environment.name, action.event)
+            outputStatus(environment.name, action.event, action.action)
         }
     }
 

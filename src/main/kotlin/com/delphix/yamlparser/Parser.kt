@@ -29,7 +29,12 @@ object Parser {
 
     fun loadEventFromPayload(): String {
         val payloadFile = File("payload.json")
-        fileExists(payloadFile)
+        try {
+            fileExists(payloadFile)
+        } catch (e: NoSuchFileException) {
+            System.err.println(e.message + " is required.")
+            System.exit(0)
+        }
         val payload = loadJsonFromFile(payloadFile)
         var event: String = payload["action"]?.textValue() ?: "push"
         if (event == "opened" || event == "closed") event = "pull-request-$event"
@@ -52,7 +57,7 @@ object Parser {
         try {
             fileExists(file)
         } catch (e: NoSuchFileException) {
-            System.err.println(e.message)
+            System.err.println(e.message + " is required.")
             System.exit(0)
         }
 
@@ -63,7 +68,6 @@ object Parser {
             System.err.println(e.message)
             System.exit(0)
         }
-
 
         val env: Map<String, String> = loadEnvs()
         val delphix: Delphix = Delphix(Api(env["delphixEngine"]?: ""))

@@ -50,11 +50,24 @@ class Mapper {
     }
 
     fun mapYaml(contents: JsonNode): Yaml {
+
+        val config = contents["config"] ?: null
+        var mappedConfig = null
+        if(config is JsonNode) {
+            var mappedConfig: Config = mapConfig(contents["config"])
+        }
+
+        val connector = contents["connectors"] ?: null
+        var mappedConnector = null
+        if(connector is JsonNode) {
+            var mappedConnector: List<Connector> = mapConnectors(contents["connectors"])
+        }
+
         return Yaml(
             contents.get("template").asText(),
             contents.get("api_key").asText(),
-            mapConfig(contents["config"]),
-            mapConnectors(contents["connectors"]),
+            mappedConfig,
+            mappedConnector,
             mapEnvironments(contents["environments"])
         );
     }
