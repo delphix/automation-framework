@@ -14,8 +14,8 @@ data class Environment(
             val name = Mapper().getNodeName(node)
             val environment = Environment(
                 "$name",
-                node["$name"]["branch"]?.asText() ?: "",
-                node["$name"]["datapod"]?.asText() ?: "",
+                node["$name"]["branch"].asText(),
+                node["$name"]["datapod"].asText(),
                 actionList
             )
             return environment
