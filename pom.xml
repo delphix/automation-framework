@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.delphix</groupId>
     <artifactId>yamlparser</artifactId>
-    <version>0.0.1</version>
+    <version>0.1.0</version>
 
     <properties>
         <kotlin.version>1.2.50</kotlin.version>
@@ -15,6 +15,13 @@
         <jackson.version>2.9.5</jackson.version>
         <main.class>com.delphix.yamlparser.Parser</main.class>
     </properties>
+
+    <repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
 
     <licenses>
         <license>
@@ -126,6 +133,16 @@
           <groupId>com.fasterxml.jackson.dataformat</groupId>
           <artifactId>jackson-dataformat-yaml</artifactId>
           <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>khttp</groupId>
+          <artifactId>khttp</artifactId>
+          <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20180130</version>
         </dependency>
     </dependencies>
 

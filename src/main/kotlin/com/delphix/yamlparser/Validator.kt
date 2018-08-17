@@ -6,7 +6,7 @@ class Validator(val contents: JsonNode) {
 
     var currentPosition: String = ""
     var errors = mutableListOf<String>()
-    val allowedEvents = listOf<String>("push", "pull-request-create", "pull-request-closed", "build-failure", "bookmark-complete")
+    val allowedEvents = listOf<String>("push", "pull-request-opened", "pull-request-closed", "build-failure", "bookmark-complete")
     val allowedActions = listOf<String>("datapod.refresh", "datapod.create", "bookmark.share", "datapod.delete", "bookmark.create", "datapod.undo")
 
     fun getMessage(field:String): String {
@@ -112,9 +112,7 @@ class Validator(val contents: JsonNode) {
             connectors(contents["connectors"])
         }
 
-        if(errors.count() > 0) {
-            renderErrors()
-        }
+        if (errors.count() > 0) renderErrors()
     }
 
 }
