@@ -6,7 +6,7 @@ import com.delphix.yamlparser.sdk.repos.SelfServiceContainer as SelfServiceConta
 import com.delphix.yamlparser.sdk.repos.SelfServiceBookmark as SelfServiceBookmark
 import org.json.JSONObject
 
-class Delphix (
+open class Delphix (
     var api: Api
 ){
     val loginResource: String = "/resources/json/delphix/login"
