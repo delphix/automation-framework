@@ -73,6 +73,7 @@ object Parser {
         val delphix: Delphix = Delphix(Api(env["delphixEngine"]?: ""))
         val yaml: Yaml = Mapper().mapYaml(contents)
         val runner: Runner = Runner(yaml, env, delphix)
+
         try {
             runner.run()
         }
@@ -80,5 +81,6 @@ object Parser {
             System.err.println(e.message)
             System.exit(0)
         }
+
     }
 }

@@ -15,7 +15,7 @@ open class Delphix (
         return mapOf("type" to "LoginRequest", "username" to username, "password" to password)
     }
 
-    fun login(username: String, password: String) {
+    open fun login(username: String, password: String) {
         api.setSession()
         api.handlePost(loginResource, requestLogin(username, password))
     }

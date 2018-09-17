@@ -1,5 +1,6 @@
 package com.delphix.yamlparser
 
+import com.delphix.yamlparser.sdk.Api as Api
 import com.delphix.yamlparser.sdk.Delphix as Delphix
 import com.delphix.yamlparser.sdk.objects.Action as Action
 import com.delphix.yamlparser.sdk.objects.Job as Job
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.module.kotlin.*
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.nhaarman.mockitokotlin2.*
+import org.json.JSONObject
 
 class RunnerTest {
     fun mapJsonToNode(json: String) : JsonNode {
@@ -25,7 +27,14 @@ class RunnerTest {
     val runner: Runner = Runner(yaml, env, delphix)
 
     @Test fun `can call Delphix`() : Unit {
-        //`when`(delphix.login(anyString(), anyString())).thenReturn(Unit::class)
+        /*
+        doNothing().whenever(delphix).login(any(), any())
+        val responseString : String = """
+        {"result":"","action":"ACTION-590","type":"OKResult","job":"JOB-371","status":"OK"}
+        """
+        whenever(delphix.selfServiceContainer().refresh(any())).thenReturn(JSONObject(responseString))
+        val result = runner.callDelphix("Develop", "datapod.refresh")
+        */
     }
 
 }
