@@ -52,10 +52,6 @@ class SelfServiceContainer (
         return api.handlePost("$resource/$ref/refresh", request)
     }
 
-    fun create() {
-
-    }
-
     fun undo(name: String): JSONObject {
         val container: SelfServiceContainerObj = getContainerByName(name)
         val ref: String = container.reference

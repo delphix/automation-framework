@@ -4,6 +4,7 @@ import com.delphix.yamlparser.sdk.repos.Action as Action
 import com.delphix.yamlparser.sdk.repos.Job as Job
 import com.delphix.yamlparser.sdk.repos.SelfServiceContainer as SelfServiceContainer
 import com.delphix.yamlparser.sdk.repos.SelfServiceBookmark as SelfServiceBookmark
+import com.delphix.yamlparser.sdk.repos.Database as Database
 import org.json.JSONObject
 
 open class Delphix (
@@ -34,5 +35,9 @@ open class Delphix (
 
     fun selfServiceBookmark(): SelfServiceBookmark {
         return SelfServiceBookmark(api)
+    }
+
+    fun database(): Database {
+        return Database(api)
     }
 }

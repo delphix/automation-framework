@@ -17,7 +17,7 @@ class Runner (
         when (event){
             "bookmark.create" -> currentAction = delphix.selfServiceBookmark().create(datapod)
             "bookmark.share" -> println(datapod)
-            "datapod.create" -> println(datapod)
+            "datapod.create" -> currentAction = delphix.database().provision()
             "datapod.delete" -> currentAction = delphix.selfServiceContainer().delete(datapod)
             "datapod.refresh" -> currentAction = delphix.selfServiceContainer().refresh(datapod)
             "datapod.undo" -> currentAction = delphix.selfServiceContainer().undo(datapod)
