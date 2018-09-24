@@ -5,6 +5,8 @@ import com.delphix.yamlparser.sdk.repos.Job as Job
 import com.delphix.yamlparser.sdk.repos.SelfServiceContainer as SelfServiceContainer
 import com.delphix.yamlparser.sdk.repos.SelfServiceBookmark as SelfServiceBookmark
 import com.delphix.yamlparser.sdk.repos.Database as Database
+import com.delphix.yamlparser.sdk.repos.Group as Group
+import com.delphix.yamlparser.sdk.repos.Repository as Repository
 import org.json.JSONObject
 
 open class Delphix (
@@ -39,5 +41,13 @@ open class Delphix (
 
     fun database(): Database {
         return Database(api)
+    }
+
+    fun group(): Group {
+      return Group(api)
+    }
+
+    fun repository(): Repository {
+      return Repository(api)
     }
 }
