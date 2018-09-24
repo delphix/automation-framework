@@ -12,13 +12,18 @@ class Runner (
 ) {
     var currentAction: JSONObject = JSONObject()
 
-    fun callDelphix(datapod: String, event: String) {
+    fun getBuildTag(environment: String): String {
+      val commit =  env["gitCommit"]?: "BUILDTAG"
+      return environment + "-" + commit.substring(0,6)
+    }
+
+    fun callDelphix(datapod: String, environment: String, event: String) {
         delphix.login(env["delphixUser"]?: "", env["delphixPass"]?: "")
         when (event){
             "bookmark.create" -> currentAction = delphix.selfServiceBookmark().create(datapod)
             "bookmark.share" -> println(datapod)
-            "datapod.create" -> currentAction = delphix.database().provision()
-            "datapod.delete" -> currentAction = delphix.selfServiceContainer().delete(datapod)
+            "datapod.create" -> currentAction = delphix.database().provision(getBuildTag(environment), yaml.template, yaml.parent, env["delphixRepository"]?: "")
+            "datapod.delete" -> currentAction = delphix.database().delete(getBuildTag(environment))
             "datapod.refresh" -> currentAction = delphix.selfServiceContainer().refresh(datapod)
             "datapod.undo" -> currentAction = delphix.selfServiceContainer().undo(datapod)
         }
@@ -46,7 +51,7 @@ class Runner (
 
     fun execActionPhase(environment: Environment) {
         for (action in environment.actions) {
-            if (action.event == env["gitEvent"]) callDelphix(environment.datapod, action.action)
+            if (action.event == env["gitEvent"]) callDelphix(environment.datapod, environment.name, action.action)
             outputStatus(environment.name, action.event, action.action)
         }
     }
