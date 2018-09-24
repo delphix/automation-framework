@@ -41,7 +41,7 @@ class MapperTest {
 
     @Test fun `can map yaml`() : Unit {
         val jsonString : String = """
-        {"template":"name_of_template","api_key":"app_key_token in KMS","environments":[{"staging":{"branch":"origin/staging","datapod":"Staging","data-sources":[{"oracle-source *arbit-name*":{"ami":"ami-0dfffed98347ecd *optional*"}}],"connectors *overwrite*":[{"oracle-connector":{"database":"name_of_db_in_kms"}}],"when":[{"push":"datapod.refresh"}]}},{"uat":{"branch":"origin/testing","datapod":"test","when":[{"push":"datapod.refresh"},{"pull-request-opened":"datapod.create"},{"pull-request-closed":"datapod.delete"}]}},{"develop":{"branch":"origin/develop","datapod":"Develop","when":[{"push":"bookmark.create"}]}}]}
+        {"template":"name_of_template","parent":"parent-source","api_key":"app_key_token in KMS","environments":[{"staging":{"branch":"origin/staging","datapod":"Staging","data-sources":[{"oracle-source *arbit-name*":{"ami":"ami-0dfffed98347ecd *optional*"}}],"connectors *overwrite*":[{"oracle-connector":{"database":"name_of_db_in_kms"}}],"when":[{"push":"datapod.refresh"}]}},{"uat":{"branch":"origin/testing","datapod":"test","when":[{"push":"datapod.refresh"},{"pull-request-opened":"datapod.create"},{"pull-request-closed":"datapod.delete"}]}},{"develop":{"branch":"origin/develop","datapod":"Develop","when":[{"push":"bookmark.create"}]}}]}
         """
         val yaml = mapper.mapYaml(mapJsonToNode(jsonString))
         assertEquals("name_of_template", yaml.template)

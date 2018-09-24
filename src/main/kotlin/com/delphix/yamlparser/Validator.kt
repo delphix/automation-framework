@@ -94,6 +94,7 @@ class Validator(val contents: JsonNode) {
 
     fun validate() {
         field(contents, "template")
+        field(contents, "parent")
         field(contents, "api_key")
         node(contents, "environments")
         environments(contents["environments"])

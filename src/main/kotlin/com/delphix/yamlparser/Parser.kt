@@ -48,7 +48,15 @@ object Parser {
         val delphixEngine: String = System.getenv("DELPHIX_ENGINE") ?: throw IllegalArgumentException("DELPHIX_ENGINE Environment Variable Required.")
         val delphixUser: String = System.getenv("DELPHIX_USER") ?: throw IllegalArgumentException("DELPHIX_USER Environment Variable Required.")
         val delphixPass: String = System.getenv("DELPHIX_PASS") ?: throw IllegalArgumentException("DELPHIX_PASS Environment Variable Required.")
-        return mapOf("gitBranch" to gitBranch, "gitCommit" to gitCommit, "gitEvent" to gitEvent, "delphixEngine" to delphixEngine, "delphixUser" to delphixUser, "delphixPass" to delphixPass)
+        return mapOf(
+          "gitBranch" to gitBranch,
+          "gitCommit" to gitCommit,
+          "gitEvent" to gitEvent,
+          "delphixEngine" to delphixEngine,
+          "delphixUser" to delphixUser,
+          "delphixPass" to delphixPass,
+          "delphixRepository" to "Postgres vFiles (9.6.8)"
+        )
     }
 
     @JvmStatic
