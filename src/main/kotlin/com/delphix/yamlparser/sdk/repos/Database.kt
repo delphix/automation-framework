@@ -50,7 +50,7 @@ class Database (
         val container = mapOf("type" to "AppDataContainer", "name" to name, "group" to group.reference, "sourcingPolicy" to sourcingPolicy)
         val params = mapOf("timeStamp" to "", "postgresPort" to 5434)
         val source = mapOf("type" to "AppDataVirtualSource", "name" to name, "allowAutoVDBRestartOnHostReboot" to true, "parameters" to params)
-        val sourceConfig = mapOf("type" to "AppDataDirectSourceConfig", "path" to "/mnt/provision/$name", "name" to name, "repository" to repo.reference, "linkingEnabled" to true, "environmentUser" to "HOST_USER-1")
+        val sourceConfig = mapOf("type" to "AppDataDirectSourceConfig", "path" to "/mnt/provision/$name", "name" to name, "repository" to repo.reference, "linkingEnabled" to true)
         val timeflow = mapOf("type" to "TimeflowPointSemantic", "snapshot" to "LATEST_POINT", "container" to parentDb.reference)
         val request = mapOf(
             "type" to "AppDataProvisionParameters",
