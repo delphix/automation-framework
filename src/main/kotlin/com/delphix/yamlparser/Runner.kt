@@ -20,8 +20,8 @@ class Runner (
     fun callDelphix(datapod: String, environment: String, event: String) {
         delphix.login(env["delphixUser"]?: "", env["delphixPass"]?: "")
         when (event){
-            "bookmark.create" -> currentAction = delphix.selfServiceBookmark().create(datapod)
-            "bookmark.share" -> println(datapod)
+            "bookmark.create" -> currentAction = delphix.selfServiceBookmark().create(getBuildTag(environment), datapod)
+            "bookmark.share" -> currentAction = delphix.selfServiceBookmark().share(getBuildTag(environment))
             "datapod.create" -> currentAction = delphix.database().provision(getBuildTag(environment), yaml.template, yaml.parent, env["delphixRepository"]?: "")
             "datapod.delete" -> currentAction = delphix.database().delete(getBuildTag(environment))
             "datapod.refresh" -> currentAction = delphix.selfServiceContainer().refresh(datapod)

@@ -31,7 +31,7 @@ data class SelfServiceBookmark(
     val usable: Boolean,
     val checkoutCount: Int,
     val bookmarkType: String,
-    val expiration: Boolean,
+    val expiration: String,
     val creationTime: String
 ){
     companion object {
@@ -53,7 +53,7 @@ data class SelfServiceBookmark(
                 node.getBoolean("usable"),
                 node.getInt("checkoutCount"),
                 node.get("bookmarkType").toString(),
-                node.getBoolean("expiration"),
+                node.get("expiration").toString(),
                 node.get("creationTime").toString()
             )
             return selfServiceBookmark

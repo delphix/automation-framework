@@ -42,17 +42,19 @@ class SelfServiceBookmark (
         for (bookmark in bookmarks) {
             if (bookmark.name == name) return bookmark.reference
         }
-        throw IllegalArgumentException("Self Service Container '$name' does not exist.")
+        throw IllegalArgumentException("Self Service Bookmark '$name' does not exist.")
     }
 
-    fun create(name: String): JSONObject {
-        val container: SelfServiceContainerObj = SelfServiceContainer(api).getContainerByName(name)
-        val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
-        val formatted = current.format(formatter)
-        val bookmark = mapOf("type" to "JSBookmark", "name" to "DAF: $formatted", "branch" to container.activeBranch)
+    fun create(name: String, container: String): JSONObject {
+        val container: SelfServiceContainerObj = SelfServiceContainer(api).getContainerByName(container)
+        val bookmark = mapOf("type" to "JSBookmark", "name" to name, "branch" to container.activeBranch)
         val timeline = mapOf("type" to "JSTimelinePointLatestTimeInput", "sourceDataLayout" to container.reference)
         val request = mapOf("type" to "JSBookmarkCreateParameters", "bookmark" to bookmark, "timelinePointParameters" to timeline)
         return api.handlePost("$resource", request)
+    }
+
+    fun share(name: String): JSONObject {
+        val ref = getRefByName(name);
+        return api.handlePost("$resource/$ref/share", emptyMap<String, Any>())
     }
 }
