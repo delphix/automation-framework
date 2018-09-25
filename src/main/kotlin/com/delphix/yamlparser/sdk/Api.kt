@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2018 by Delphix. All rights reserved.
+ */
+
 package com.delphix.yamlparser.sdk
 
 import khttp.get
