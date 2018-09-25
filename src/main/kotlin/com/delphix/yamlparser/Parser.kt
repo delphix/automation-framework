@@ -1,7 +1,7 @@
 package com.delphix.yamlparser
 
 import com.delphix.yamlparser.sdk.Delphix as Delphix
-import com.delphix.yamlparser.sdk.Api as Api
+import com.delphix.yamlparser.sdk.Http as Http
 
 import com.fasterxml.jackson.module.kotlin.*
 import com.fasterxml.jackson.databind.JsonNode
@@ -78,7 +78,7 @@ object Parser {
         }
 
         val env: Map<String, String> = loadEnvs()
-        val delphix: Delphix = Delphix(Api(env["delphixEngine"]?: ""))
+        val delphix: Delphix = Delphix(Http(env["delphixEngine"]?: ""))
         val yaml: Yaml = Mapper().mapYaml(contents)
         val runner: Runner = Runner(yaml, env, delphix)
 
@@ -89,6 +89,6 @@ object Parser {
             System.err.println(e.message)
             System.exit(0)
         }
-
+        
     }
 }
