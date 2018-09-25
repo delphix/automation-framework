@@ -22,6 +22,7 @@ class Runner (
         when (event){
             "bookmark.create" -> currentAction = delphix.selfServiceBookmark().create(getBuildTag(environment), datapod)
             "bookmark.share" -> currentAction = delphix.selfServiceBookmark().share(getBuildTag(environment))
+            "bookmark.delete" -> currentAction = delphix.selfServiceBookmark().delete(getBuildTag(environment))
             "datapod.create" -> currentAction = delphix.database().provision(getBuildTag(environment), yaml.template, yaml.parent, env["delphixRepository"]?: "")
             "datapod.delete" -> currentAction = delphix.database().delete(getBuildTag(environment))
             "datapod.refresh" -> currentAction = delphix.selfServiceContainer().refresh(datapod)

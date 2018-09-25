@@ -54,7 +54,12 @@ class SelfServiceBookmark (
     }
 
     fun share(name: String): JSONObject {
-        val ref = getRefByName(name);
+        val ref = getRefByName(name)
         return api.handlePost("$resource/$ref/share", emptyMap<String, Any>())
+    }
+
+    fun delete(name: String): JSONObject {
+        val ref = getRefByName(name)
+        return api.handlePost("$resource/$ref/delete", emptyMap<String, Any>())
     }
 }
