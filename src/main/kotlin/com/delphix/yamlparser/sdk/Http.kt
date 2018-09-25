@@ -10,7 +10,7 @@ import khttp.responses.Response
 import khttp.structures.cookie.CookieJar
 import org.json.JSONObject
 
-class Api(
+class Http(
     val engineAddress: String = "http://34.211.184.233",
     val versionMajor: Int = 1,
     val versionMinor: Int = 7,

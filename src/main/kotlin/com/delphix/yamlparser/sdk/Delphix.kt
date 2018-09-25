@@ -23,7 +23,7 @@ import com.delphix.yamlparser.sdk.repos.Repository as Repository
 import org.json.JSONObject
 
 open class Delphix (
-    var api: Api
+    var http: Http
 ){
     val loginResource: String = "/resources/json/delphix/login"
 
@@ -32,35 +32,35 @@ open class Delphix (
     }
 
     open fun login(username: String, password: String) {
-        api.setSession()
-        api.handlePost(loginResource, requestLogin(username, password))
+        http.setSession()
+        http.handlePost(loginResource, requestLogin(username, password))
     }
 
     fun action(): Action {
-        return Action(api)
+        return Action(http)
     }
 
     fun job(): Job {
-        return Job(api)
+        return Job(http)
     }
 
     fun selfServiceContainer(): SelfServiceContainer {
-        return SelfServiceContainer(api)
+        return SelfServiceContainer(http)
     }
 
     fun selfServiceBookmark(): SelfServiceBookmark {
-        return SelfServiceBookmark(api)
+        return SelfServiceBookmark(http)
     }
 
     fun database(): Database {
-        return Database(api)
+        return Database(http)
     }
 
     fun group(): Group {
-      return Group(api)
+      return Group(http)
     }
 
     fun repository(): Repository {
-      return Repository(api)
+      return Repository(http)
     }
 }

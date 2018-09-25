@@ -4,18 +4,18 @@
 
 package com.delphix.yamlparser.sdk.repos
 
-import com.delphix.yamlparser.sdk.Api as Api
+import com.delphix.yamlparser.sdk.Http as Http
 import com.delphix.yamlparser.sdk.objects.Group as GroupObj
 import org.json.JSONObject
 
 class Group (
-    var api: Api
+    var http: Http
 ) {
     val resource: String = "/resources/json/delphix/group"
 
     fun list(): List<GroupObj> {
         var groups = mutableListOf<GroupObj>()
-        val response = api.handleGet(resource).getJSONArray("result")
+        val response = http.handleGet(resource).getJSONArray("result")
         for (i in 0 until response.length()) {
             val group = response.getJSONObject(i);
             groups.add(GroupObj.fromJson(group))

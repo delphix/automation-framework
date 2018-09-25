@@ -4,17 +4,17 @@
 
 package com.delphix.yamlparser.sdk.repos
 
-import com.delphix.yamlparser.sdk.Api as Api
+import com.delphix.yamlparser.sdk.Http as Http
 import com.delphix.yamlparser.sdk.objects.Job as JobObj
 import org.json.JSONObject
 
 class Job (
-    var api: Api
+    var http: Http
 ) {
     val resource: String = "/resources/json/delphix/job"
 
     fun get(ref: String): JobObj {
-        val response = api.handleGet("$resource/$ref")
+        val response = http.handleGet("$resource/$ref")
         val job = JobObj.fromJson(response.getJSONObject("result"))
         return job
     }

@@ -4,20 +4,20 @@
 
 package com.delphix.yamlparser.sdk.repos
 
-import com.delphix.yamlparser.sdk.Api as Api
+import com.delphix.yamlparser.sdk.Http as Http
 import com.delphix.yamlparser.sdk.repos.Group as Group
 import com.delphix.yamlparser.sdk.repos.Repository as Repository
 import com.delphix.yamlparser.sdk.objects.Database as DatabaseObj
 import org.json.JSONObject
 
 class Database (
-    var api: Api
+    var http: Http
 ) {
     val resource: String = "/resources/json/delphix/database"
 
     fun list(): List<DatabaseObj> {
         var databases = mutableListOf<DatabaseObj>()
-        val response = api.handleGet(resource).getJSONArray("result")
+        val response = http.handleGet(resource).getJSONArray("result")
         for (i in 0 until response.length()) {
             val database = response.getJSONObject(i);
             databases.add(DatabaseObj.fromJson(database))
@@ -34,9 +34,9 @@ class Database (
     }
 
     fun provision(name: String, groupName: String, dbName: String, repoName: String): JSONObject {
-        val group = Group(api).getRefByName(groupName)
+        val group = Group(http).getRefByName(groupName)
         val parentDb = getRefByName(dbName)
-        val repo = Repository(api).getRefByName(repoName)
+        val repo = Repository(http).getRefByName(repoName)
         val sourcingPolicy = mapOf("type" to "SourcingPolicy", "logsyncEnabled" to false)
         val container = mapOf("type" to "AppDataContainer", "name" to name, "group" to group.reference, "sourcingPolicy" to sourcingPolicy)
         val params = mapOf("timeStamp" to "", "postgresPort" to 5434)
@@ -51,13 +51,13 @@ class Database (
             "container" to container
         )
         println(request)
-        return api.handlePost("$resource/provision", request)
+        return http.handlePost("$resource/provision", request)
     }
 
     fun delete(name: String): JSONObject {
         val ref: String = getRefByName(name).reference
         val request = mapOf("type" to "DeleteParameters", "force" to false)
-        return api.handlePost("$resource/$ref/delete", request)
+        return http.handlePost("$resource/$ref/delete", request)
 
     }
 }
