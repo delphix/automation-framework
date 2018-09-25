@@ -50,7 +50,6 @@ class Database (
             "source" to source,
             "container" to container
         )
-        println(request)
         return http.handlePost("$resource/provision", request)
     }
 

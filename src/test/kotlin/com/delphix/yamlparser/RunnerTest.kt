@@ -1,6 +1,6 @@
 package com.delphix.yamlparser
 
-import com.delphix.yamlparser.sdk.Api as Api
+import com.delphix.yamlparser.sdk.Http as Http
 import com.delphix.yamlparser.sdk.Delphix as Delphix
 import com.delphix.yamlparser.sdk.objects.Action as Action
 import com.delphix.yamlparser.sdk.objects.Job as Job
