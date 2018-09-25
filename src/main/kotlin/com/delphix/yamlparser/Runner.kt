@@ -52,8 +52,12 @@ class Runner (
 
     fun execActionPhase(environment: Environment) {
         for (action in environment.actions) {
-            if (action.event == env["gitEvent"]) callDelphix(environment.datapod, environment.name, action.action)
-            outputStatus(environment.name, action.event, action.action)
+            if (action.event == env["gitEvent"]) {
+                callDelphix(environment.datapod, environment.name, action.action)
+                outputStatus(environment.name, action.event, action.action)
+            } else {
+                println("-${environment.name}: ${action.event}: Not Triggered.")
+            }
         }
     }
 
