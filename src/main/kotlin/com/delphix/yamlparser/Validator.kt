@@ -6,7 +6,6 @@ class Validator(val contents: JsonNode) {
 
     var currentPosition: String = ""
     var errors = mutableListOf<String>()
-    val allowedEvents = listOf<String>("push", "pull-request-opened", "pull-request-closed", "build-failure", "bookmark-complete")
     val allowedActions = listOf<String>("datapod.refresh", "datapod.create", "bookmark.share", "datapod.delete", "bookmark.create", "datapod.undo", "bookmark.delete")
 
     fun getMessage(field:String): String {
@@ -61,15 +60,6 @@ class Validator(val contents: JsonNode) {
         }
     }
 
-    fun events(events: JsonNode) {
-        for(event in events){
-            val name = Mapper().getNodeName(event)
-            currentPosition = "$currentPosition.$name"
-            if (name !in allowedEvents) invalid(name)
-            if (event.get("$name").asText() !in allowedActions) invalid(event.get("$name").asText())
-        }
-    }
-
     fun environments(environments: JsonNode) {
         for(environment in environments){
             val name = Mapper().getNodeName(environment)
@@ -79,8 +69,8 @@ class Validator(val contents: JsonNode) {
                 field(environment["$name"], "datapod")
             }
             node(environment["$name"], "when")
+            environment["$name"]["when"] ?: return
             if (environment["$name"]["when"].size() == 0) empty("when")
-            events(environment["$name"]["when"])
         }
     }
 
