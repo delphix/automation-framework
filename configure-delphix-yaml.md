@@ -131,32 +131,40 @@ environments:
 ```
 template: Sample Template
 api_key: abf7746cff392
-data-sources:
-  - postgres:
-      ami: ami-0dfffed98347ecd
+parent: dSource Name
+config:
+  notes: description *optional*
+  data-sources:
+    - postgres:
+        notes: Here are notes
+        replica: Default
+        source: dbdhcp3
+        start-order: 1
+        ami: ami-0dfffed98347ecd
 connectors:
   - postgres:
-      host: hostname
-      port: port
-      database: dbName
-      username: username
-      password: password
+      host: host_ref_in_kms
+      port: kms_ref
+      database: db_name
+      username: kms_ref
+      password: kms_ref
 environments:
   - staging:
-      branch: staging
-      datapod: staging-pod
+      branch: origin/staging
+      datapod: Staging
       when:
-        - push: refresh
+        - push: datapod.refresh
   - uat:
-      branch: testing
-      datapod: user-testing-pod
+      branch: origin/testing
+      datapod: test
       when:
-        - push: refresh
-        - pull-request-create: create
-        - pull-request-closed: delete
+        - push: datapod.refresh
+        - pull-request-opened: datapod.create
+        - pull-request-closed: datapod.delete
   - develop:
-      branch: develop
-      datapod: develop-pod
+      branch: origin/feature/unit-tests
+      datapod: Develop
       when:
-        - push: refresh
+        - custom: datapod.refresh
+        - build-failure: datapod.undo
 ```
