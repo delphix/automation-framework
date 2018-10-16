@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 data class Connector(
     val name: String,
     val host: String,
-    val port: Int,
+    val port: String,
     val database: String,
     val username: String,
     val password: String
@@ -17,7 +17,7 @@ data class Connector(
             val connector = Connector(
                 "$name",
                 node["$name"]["host"].asText(),
-                node["$name"]["port"].asInt(),
+                node["$name"]["port"].asText(),
                 node["$name"]["database"].asText(),
                 node["$name"]["username"].asText(),
                 node["$name"]["password"].asText()
