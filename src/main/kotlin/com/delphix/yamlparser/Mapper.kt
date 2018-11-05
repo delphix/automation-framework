@@ -66,7 +66,7 @@ class Mapper {
         return Yaml(
             contents.get("template").asText(),
             contents.get("parent").asText(),
-            contents.get("api_key").asText(),
+            //contents.get("api_key").asText(),
             mappedConfig,
             mappedConnector,
             mapEnvironments(contents["environments"])

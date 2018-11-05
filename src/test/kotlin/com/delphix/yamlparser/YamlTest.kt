@@ -16,14 +16,10 @@ class YamlTest {
     private val connector = Connector("name", "host", "port", "database", "username", "password")
     private val action = Action("event", "action")
     private val environment = Environment("develop", "branch", "datapod", listOf(action))
-    private val yaml = Yaml("template", "parent", "api_key", config, listOf(connector), listOf(environment));
+    private val yaml = Yaml("template", "parent", config, listOf(connector), listOf(environment));
 
     @Test fun `can get template`() : Unit {
         assertEquals("template", yaml.template)
-    }
-
-    @Test fun `can get api_key`() : Unit {
-        assertEquals("api_key", yaml.api_key)
     }
 
     @Test fun `can get environment`() : Unit {
