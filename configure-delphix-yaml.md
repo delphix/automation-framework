@@ -45,6 +45,7 @@ environments:
 |[branch](#branch)|The source GIT branch for a specific Application Environment.
 |[datapod](#datapod)|The Delphix Datapod for a specific Application Environment.
 |[when](#when)|The collection of Actions for a specific Application Environment.
+|[then](#then)|The Delphix Self Service action executed for this `when` trigger.
 
 
 ### <a id="template"></a>template
@@ -91,6 +92,10 @@ The name of the datapod used for the database of the environment. Must have been
 ### <a id="when"></a>when
 
 The collection of Actions for an environment based on the Given -> When -> Then format described above.
+
+### <a id="then"></a>then
+
+The specific Self Service API call to be executed during this Action. Acceptable values: `datapod.refresh`, `datapod.create`, `datapod.delete`, `bookmark.share`, `bookmark.create`, `datapod.undo`, and `bookmark.delete`.
 
 ## Overwrites
 

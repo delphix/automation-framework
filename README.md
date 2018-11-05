@@ -1,10 +1,11 @@
 # Delphix Automation Framework
 
-Always include a project title with the largest heading. A project logo may replace the project title, if one has been designed. Project badges are common for OSS projects. They show quick information like Build Status, Download Count, etc... If there are any relevant badges, include them below the project title in MD format. In the paragraph immediately following the project title and badges, include information about the project and/or an overview that explains **what** the project is.
+The Delphix Automation Framework (DAF) allows automating data management via APIs at scale. Easily automate Delphix Self Service actions in CI/CD Pipelines without being tied to any specific CI Software.
 
 #### Table of Contents
 1.  [Description](#description)
 2.  [Installation](#installation)
+    *   [The delphix.yaml file](#delphix-yaml)
 3.  [Usage](#usage)
 4.  [Links](#links)
 5.  [Contribute](#contribute)
@@ -17,14 +18,18 @@ Always include a project title with the largest heading. A project logo may repl
 
 ## <a id="description"></a>Description
 
+DAF combines environment variables commonly available during CI/CD and data management as code in the `delphix.yaml` file to automate API calls to the Delphix Dynamic Data Platform. This allows for chain-able API calls that can be triggered during different stages of the CI/CD pipeline. The data state for different non-production environments is now visible through code configuration and that configuration is under version control.
 
 ## <a id="installation"></a>Installation
+
+The tools and executable for DAF have been containerized with docker for convenience. Use the latest version by pulling the container below.
 
 ```bash
 docker pull delphix/daf
 ```
+### <a id="delphix-yaml"></a>The delphix.yaml file
 
-Create a `delphix.yaml` file based on this guide: [Configure Delphix YAML](./configure-delphix-yaml.md)
+The `delphix.yaml` file is the configuration file that defines the data management as code strategy for the project. Create a `delphix.yaml` file based on this guide: [Configure Delphix YAML](./configure-delphix-yaml.md)
 
 ## <a id="usage"></a>Usage
 
