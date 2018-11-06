@@ -2,8 +2,7 @@
 
 set -ex
 
-#set DOCKERUSER as Environment Variable
-#export DOCKERUSER="dockeruser"
-IMAGE=daf
+DOCKERUSER=delphix
+IMAGE=automation-framework
 
 docker build -t ${DOCKERUSER}/$IMAGE:latest .

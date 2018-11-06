@@ -2,8 +2,8 @@
 
 set -ex
 
-#set DOCKERUSER as Environment Variable
-IMAGE=daf
+DOCKERUSER=delphix
+IMAGE=automation-framework
 
 # ensure we're up to date
 git pull
