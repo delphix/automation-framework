@@ -30,5 +30,5 @@ environments:
       branch: origin/feature/unit-tests
       datapod: Develop
       when:
-        - push: datapod.refresh
+        - not-push: datapod.refresh
         - build-failure: datapod.undo
