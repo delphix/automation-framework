@@ -25,7 +25,7 @@ DAF combines environment variables commonly available during CI/CD and data mana
 The tools and executable for DAF have been containerized with docker for convenience. Use the latest version by pulling the container below.
 
 ```bash
-docker pull delphix/daf
+docker pull delphix/automation-framework
 ```
 ### <a id="delphix-yaml"></a>The delphix.yaml file
 
@@ -45,7 +45,7 @@ Optionally, the `GIT_EVENT` can be set by a GitHub Webhook Payload file: `payloa
 Run the docker container with your project mounted as a volume and environment file instantiated.
 
 ```bash
-docker run -v ${PWD}:/daf/app --env-file ${PWD}/.env delphix/daf
+docker run -v ${PWD}:/daf/app --env-file ${PWD}/.env delphix/automation-framework
 ```
 
 ## <a id="links"></a>Links
