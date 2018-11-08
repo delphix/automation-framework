@@ -11,7 +11,7 @@ git pull
 version=`cat VERSION`
 
 # run build
-./build.sh
+./build.sh $version
 
 # tag it
 git add -A
