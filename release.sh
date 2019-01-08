@@ -6,7 +6,7 @@ DOCKERUSER=delphix
 IMAGE=automation-framework
 
 # ensure we're up to date
-git pull
+git pull Github-Delphix master
 
 version=`cat VERSION`
 
@@ -17,8 +17,8 @@ version=`cat VERSION`
 git add -A
 git commit -m "version $version"
 git tag -a "$version" -m "version $version"
-git push
-git push --tags
+git push Github-Delphix master
+git push Github-Delphix master --tags
 docker tag ${DOCKERUSER}/$IMAGE:latest ${DOCKERUSER}/$IMAGE:$version
 
 # push it
