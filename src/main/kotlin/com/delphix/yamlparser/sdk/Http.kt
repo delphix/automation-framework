@@ -17,16 +17,22 @@ class Http(
     val versionMicro: Int = 0
 ){
     val sessionResource: String = "/resources/json/delphix/session"
-    var sessionCookies: CookieJar = CookieJar()
+    var JSESSIONID: String = ""
 
     fun requestSessions(): Map<String, Any> {
         val version = mapOf("type" to "APIVersion", "major" to versionMajor, "minor" to versionMinor, "micro" to versionMicro)
         return mapOf("type" to "APISession", "version" to version)
     }
 
+    fun getCookie(): Map<String, String> {
+      return mapOf("JSESSIONID" to JSESSIONID)
+    }
+
     fun setSession() {
         val r = post("$engineAddress$sessionResource", json = requestSessions())
-        sessionCookies = r.cookies
+        val cookie: String? = r.cookies["JSESSIONID"]
+        val cookieArray: List<String>? = cookie?.split(";")
+        JSESSIONID = cookieArray!!.get(0)
     }
 
     fun validateResponse(response: JSONObject) {
@@ -42,7 +48,7 @@ class Http(
         val response =  post(
             "$engineAddress$url",
             json = content,
-            cookies = sessionCookies
+            cookies = getCookie()
         )
         validateResponse(response.jsonObject)
         return response.jsonObject
@@ -51,7 +57,7 @@ class Http(
     fun handleGet(url: String): JSONObject {
         val response = get(
             "$engineAddress$url",
-            cookies = sessionCookies
+            cookies = getCookie()
         )
         validateResponse(response.jsonObject)
         return response.jsonObject
