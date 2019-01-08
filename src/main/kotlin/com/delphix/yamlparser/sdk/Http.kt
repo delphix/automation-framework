@@ -28,11 +28,17 @@ class Http(
       return mapOf("JSESSIONID" to JSESSIONID)
     }
 
-    fun setSession() {
-        val r = post("$engineAddress$sessionResource", json = requestSessions())
+    fun checkCookie(r: Response) {
+      if (r.cookies.isNotEmpty()) {
         val cookie: String? = r.cookies["JSESSIONID"]
         val cookieArray: List<String>? = cookie?.split(";")
         JSESSIONID = cookieArray!!.get(0)
+      }
+    }
+
+    fun setSession() {
+        val r = post("$engineAddress$sessionResource", json = requestSessions())
+        checkCookie(r)
     }
 
     fun validateResponse(response: JSONObject) {
@@ -50,6 +56,7 @@ class Http(
             json = content,
             cookies = getCookie()
         )
+        checkCookie(response)
         validateResponse(response.jsonObject)
         return response.jsonObject
     }
@@ -59,6 +66,7 @@ class Http(
             "$engineAddress$url",
             cookies = getCookie()
         )
+        checkCookie(response)
         validateResponse(response.jsonObject)
         return response.jsonObject
     }
