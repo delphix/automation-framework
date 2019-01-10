@@ -13,6 +13,26 @@ class Job (
 ) {
     val resource: String = "/resources/json/delphix/job"
 
+    fun list(): List<JobObj> {
+      var jobs = mutableListOf<JobObj>()
+      val response = http.handleGet("$resource").getJSONArray("result")
+      for (i in 0 until response.length()) {
+          val job = response.getJSONObject(i);
+          jobs.add(JobObj.fromJson(job))
+      }
+      return jobs
+    }
+
+    fun getWhereRunning(): List<JobObj> {
+      var jobs = mutableListOf<JobObj>()
+      val response = http.handleGet("$resource?jobState=RUNNING").getJSONArray("result")
+      for (i in 0 until response.length()) {
+          val job = response.getJSONObject(i);
+          jobs.add(JobObj.fromJson(job))
+      }
+      return jobs
+    }
+
     fun get(ref: String): JobObj {
         val response = http.handleGet("$resource/$ref")
         val job = JobObj.fromJson(response.getJSONObject("result"))
