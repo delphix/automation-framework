@@ -9,7 +9,9 @@ class Runner (
     val yaml: Yaml,
     val env: Map<String, String>,
     val delphix: Delphix,
-    val bookmark: String
+    val bookmark: String,
+    val retryLimit: Int,
+    val waitTime: Int
 ) {
     var currentAction: JSONObject = JSONObject()
 
@@ -63,11 +65,18 @@ class Runner (
     }
 
     fun execActionPhase(environment: Environment) {
-        for (action in environment.actions) {
+        loop@ for (action in environment.actions) {
             if (action.event == env["gitEvent"]) {
+                var tries = 1
                 while(jobConflictExists(environment.datapod)) {
-                    println("Job Conflict Exists. Waiting 30 seconds to try again.")
-                    Thread.sleep(30000)
+                    if (tries > retryLimit) {
+                        println("Retry Limit Exceeded for Job Conflict.")
+                        break@loop
+                    }
+                    println("Job Conflict Exists. Waiting $waitTime seconds to try again.")
+                    val waitMil = waitTime * 1000
+                    Thread.sleep(waitMil.toLong())
+                    tries++
                 }
                 callDelphix(environment.datapod, environment.name, action.action)
                 outputStatus(environment.name, action.event, action.action)
