@@ -1,5 +1,9 @@
 package com.delphix.yamlparser
 
+import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.parameters.options.*
+import io.github.cdimascio.dotenv.dotenv as Dotenv
+
 import com.delphix.yamlparser.sdk.Delphix as Delphix
 import com.delphix.yamlparser.sdk.Http as Http
 
@@ -41,13 +45,20 @@ object Parser {
         return event
     }
 
-    fun loadEnvs(): Map<String, String>  {
-        val gitBranch: String = System.getenv("GIT_BRANCH") ?: throw IllegalArgumentException("GIT_BRANCH Environment Variable Required.")
-        val gitCommit: String = System.getenv("GIT_COMMIT") ?: throw IllegalArgumentException("GIT_COMMIT Environment Variable Required.")
-        val gitEvent = System.getenv("GIT_EVENT") ?: loadEventFromPayload()
-        val delphixEngine: String = System.getenv("DELPHIX_ENGINE") ?: throw IllegalArgumentException("DELPHIX_ENGINE Environment Variable Required.")
-        val delphixUser: String = System.getenv("DELPHIX_USER") ?: throw IllegalArgumentException("DELPHIX_USER Environment Variable Required.")
-        val delphixPass: String = System.getenv("DELPHIX_PASS") ?: throw IllegalArgumentException("DELPHIX_PASS Environment Variable Required.")
+    fun loadEnvs(env: String): Map<String, String>  {
+
+        val dotenv = Dotenv {
+            filename = "$env"
+            ignoreIfMalformed = true
+            ignoreIfMissing = true
+        }
+
+        val gitBranch: String = dotenv["GIT_BRANCH"] ?: throw IllegalArgumentException("GIT_BRANCH Environment Variable Required.")
+        val gitCommit: String = dotenv["GIT_COMMIT"] ?: throw IllegalArgumentException("GIT_COMMIT Environment Variable Required.")
+        val gitEvent = dotenv["GIT_EVENT"] ?: loadEventFromPayload()
+        val delphixEngine: String = dotenv["DELPHIX_ENGINE"] ?: throw IllegalArgumentException("DELPHIX_ENGINE Environment Variable Required.")
+        val delphixUser: String = dotenv["DELPHIX_USER"] ?: throw IllegalArgumentException("DELPHIX_USER Environment Variable Required.")
+        val delphixPass: String = dotenv["DELPHIX_PASS"] ?: throw IllegalArgumentException("DELPHIX_PASS Environment Variable Required.")
         return mapOf(
           "gitBranch" to gitBranch,
           "gitCommit" to gitCommit,
@@ -59,8 +70,11 @@ object Parser {
         )
     }
 
-    @JvmStatic
-    fun main(args : Array<String>) {
+    class Parse : CliktCommand() {
+      val env: String by option(help="Path to env file.").default(".env")
+
+      override fun run(){
+
         val file = File("delphix.yaml")
         try {
             fileExists(file)
@@ -77,7 +91,7 @@ object Parser {
             System.exit(0)
         }
 
-        val env: Map<String, String> = loadEnvs()
+        val env: Map<String, String> = loadEnvs(env)
         val delphix: Delphix = Delphix(Http(env["delphixEngine"]?: ""))
         val yaml: Yaml = Mapper().mapYaml(contents)
         val runner: Runner = Runner(yaml, env, delphix)
@@ -89,6 +103,10 @@ object Parser {
             System.err.println(e.message)
             System.exit(0)
         }
-        
+
+      }
     }
+
+    @JvmStatic
+    fun main(args: Array<String>) = Parse().main(args)
 }
