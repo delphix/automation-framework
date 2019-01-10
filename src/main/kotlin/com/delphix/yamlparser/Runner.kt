@@ -9,7 +9,9 @@ class Runner (
     val yaml: Yaml,
     val env: Map<String, String>,
     val delphix: Delphix,
-    val bookmark: String
+    val bookmark: String,
+    val retryLimit: Int,
+    val waitTime: Int
 ) {
     var currentAction: JSONObject = JSONObject()
 
@@ -22,7 +24,6 @@ class Runner (
     }
 
     fun callDelphix(datapod: String, environment: String, event: String) {
-        delphix.login(env["delphixUser"]?: "", env["delphixPass"]?: "")
         when (event){
             "bookmark.create" -> currentAction = delphix.selfServiceBookmark().create(getBuildTag(environment), datapod)
             "bookmark.share" -> currentAction = delphix.selfServiceBookmark().share(getBuildTag(environment))
@@ -54,9 +55,29 @@ class Runner (
         }
     }
 
+    fun jobConflictExists(datapod: String): Boolean {
+        val container = delphix.selfServiceContainer().getRefByName(datapod)
+        var jobs = delphix.job().getWhereRunning()
+        for(job in jobs) {
+            if (job.target == container.reference) return true
+        }
+        return false
+    }
+
     fun execActionPhase(environment: Environment) {
-        for (action in environment.actions) {
+        loop@ for (action in environment.actions) {
             if (action.event == env["gitEvent"]) {
+                var tries = 1
+                while(jobConflictExists(environment.datapod)) {
+                    if (tries > retryLimit) {
+                        println("Retry Limit Exceeded for Job Conflict.")
+                        break@loop
+                    }
+                    println("Job Conflict Exists. Waiting $waitTime seconds to try again.")
+                    val waitMil = waitTime * 1000
+                    Thread.sleep(waitMil.toLong())
+                    tries++
+                }
                 callDelphix(environment.datapod, environment.name, action.action)
                 outputStatus(environment.name, action.event, action.action)
             } else {
@@ -66,6 +87,7 @@ class Runner (
     }
 
     fun run() {
+        delphix.login(env["delphixUser"]?: "", env["delphixPass"]?: "")
         for(environment in yaml.environments) {
             if (environment.branch == env["gitBranch"]) execActionPhase(environment)
         }

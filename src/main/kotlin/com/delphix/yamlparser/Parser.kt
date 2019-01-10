@@ -2,6 +2,8 @@ package com.delphix.yamlparser
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.*
+import com.github.ajalt.clikt.parameters.types.int
+
 import io.github.cdimascio.dotenv.dotenv as Dotenv
 
 import com.delphix.yamlparser.sdk.Delphix as Delphix
@@ -73,6 +75,8 @@ object Parser {
     class Parse : CliktCommand() {
         val env: String by option(help="Path to env file.").default(".env")
         val bookmark: String by option(help="Bookmark name.").default("")
+        val retryLimit: Int by option(help="Number of times to wait for a busy job.").int().default(5)
+        val waitTime: Int by option(help="Seconds to wait for a busy job before retrying.").int().default(30)
 
         override fun run(){
             val file = File("delphix.yaml")
@@ -94,7 +98,7 @@ object Parser {
             val env: Map<String, String> = loadEnvs(env)
             val delphix: Delphix = Delphix(Http(env["delphixEngine"]?: ""))
             val yaml: Yaml = Mapper().mapYaml(contents)
-            val runner: Runner = Runner(yaml, env, delphix, bookmark)
+            val runner: Runner = Runner(yaml, env, delphix, bookmark, retryLimit, waitTime)
 
             try {
                 runner.run()
