@@ -54,9 +54,25 @@ class Runner (
         }
     }
 
+
+    fun jobConflictExists(datapod: String): Boolean {
+        delphix.login(env["delphixUser"]?: "", env["delphixPass"]?: "")
+        val container = delphix.selfServiceContainer().getRefByName(datapod)
+        var jobs = delphix.job().getWhereRunning()
+        for(job in jobs) {
+            if (job.target == container.reference) return true
+        }
+        return false
+    }
+
+
     fun execActionPhase(environment: Environment) {
         for (action in environment.actions) {
             if (action.event == env["gitEvent"]) {
+                while(jobConflictExists(environment.datapod)) {
+                    println("Job Conflict Exists. Waiting 30 seconds to try again.")
+                    Thread.sleep(30000)
+                }
                 callDelphix(environment.datapod, environment.name, action.action)
                 outputStatus(environment.name, action.event, action.action)
             } else {
