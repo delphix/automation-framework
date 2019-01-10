@@ -22,7 +22,6 @@ class Runner (
     }
 
     fun callDelphix(datapod: String, environment: String, event: String) {
-        delphix.login(env["delphixUser"]?: "", env["delphixPass"]?: "")
         when (event){
             "bookmark.create" -> currentAction = delphix.selfServiceBookmark().create(getBuildTag(environment), datapod)
             "bookmark.share" -> currentAction = delphix.selfServiceBookmark().share(getBuildTag(environment))
@@ -54,9 +53,7 @@ class Runner (
         }
     }
 
-
     fun jobConflictExists(datapod: String): Boolean {
-        delphix.login(env["delphixUser"]?: "", env["delphixPass"]?: "")
         val container = delphix.selfServiceContainer().getRefByName(datapod)
         var jobs = delphix.job().getWhereRunning()
         for(job in jobs) {
@@ -64,7 +61,6 @@ class Runner (
         }
         return false
     }
-
 
     fun execActionPhase(environment: Environment) {
         for (action in environment.actions) {
@@ -82,6 +78,7 @@ class Runner (
     }
 
     fun run() {
+        delphix.login(env["delphixUser"]?: "", env["delphixPass"]?: "")
         for(environment in yaml.environments) {
             if (environment.branch == env["gitBranch"]) execActionPhase(environment)
         }
