@@ -72,6 +72,7 @@ object Parser {
 
     class Parse : CliktCommand() {
         val env: String by option(help="Path to env file.").default(".env")
+        val bookmark: String by option(help="Bookmark name.").default("")
 
         override fun run(){
             val file = File("delphix.yaml")
@@ -93,7 +94,7 @@ object Parser {
             val env: Map<String, String> = loadEnvs(env)
             val delphix: Delphix = Delphix(Http(env["delphixEngine"]?: ""))
             val yaml: Yaml = Mapper().mapYaml(contents)
-            val runner: Runner = Runner(yaml, env, delphix)
+            val runner: Runner = Runner(yaml, env, delphix, bookmark)
 
             try {
                 runner.run()

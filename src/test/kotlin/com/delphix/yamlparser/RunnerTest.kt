@@ -24,7 +24,7 @@ class RunnerTest {
     val yaml: Yaml = Mapper().mapYaml(mapJsonToNode(jsonString))
     val env: Map<String, String> = mapOf("gitBranch" to "origin/develop", "gitCommit" to "0bb822091eed2ae15d67ed91f3ba8591b39e6c4e", "gitEvent" to "push", "delphixEngine" to "delphixEngine", "delphixUser" to "delphixUser", "delphixPass" to "delphixPass", "delphixRepository" to "Postgres vFiles (9.6.8)")
     val delphix : Delphix = mock()
-    val runner: Runner = Runner(yaml, env, delphix)
+    val runner: Runner = Runner(yaml, env, delphix, "bookmark")
 
     @Test fun `can call Delphix`() : Unit {
         /*

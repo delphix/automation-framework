@@ -8,12 +8,16 @@ import org.json.JSONObject
 class Runner (
     val yaml: Yaml,
     val env: Map<String, String>,
-    val delphix: Delphix
+    val delphix: Delphix,
+    val bookmark: String
 ) {
     var currentAction: JSONObject = JSONObject()
 
     fun getBuildTag(environment: String): String {
       val commit =  env["gitCommit"]?: "BUILDTAG"
+      if (bookmark.isNotEmpty()) {
+        return bookmark
+      }
       return environment + "-" + commit.substring(0,6)
     }
 
