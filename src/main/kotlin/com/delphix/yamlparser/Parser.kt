@@ -71,40 +71,38 @@ object Parser {
     }
 
     class Parse : CliktCommand() {
-      val env: String by option(help="Path to env file.").default(".env")
+        val env: String by option(help="Path to env file.").default(".env")
 
-      override fun run(){
+        override fun run(){
+            val file = File("delphix.yaml")
+            try {
+                fileExists(file)
+            } catch (e: NoSuchFileException) {
+                System.err.println(e.message + " is required.")
+                System.exit(0)
+            }
 
-        val file = File("delphix.yaml")
-        try {
-            fileExists(file)
-        } catch (e: NoSuchFileException) {
-            System.err.println(e.message + " is required.")
-            System.exit(0)
+            val contents = loadYamlFromFile(file)
+            try {
+                Validator(contents).validate()
+            } catch (e: IllegalArgumentException) {
+                System.err.println(e.message)
+                System.exit(0)
+            }
+
+            val env: Map<String, String> = loadEnvs(env)
+            val delphix: Delphix = Delphix(Http(env["delphixEngine"]?: ""))
+            val yaml: Yaml = Mapper().mapYaml(contents)
+            val runner: Runner = Runner(yaml, env, delphix)
+
+            try {
+                runner.run()
+            }
+            catch (e: Exception) {
+                System.err.println(e.message)
+                System.exit(0)
+            }
         }
-
-        val contents = loadYamlFromFile(file)
-        try {
-            Validator(contents).validate()
-        } catch (e: IllegalArgumentException) {
-            System.err.println(e.message)
-            System.exit(0)
-        }
-
-        val env: Map<String, String> = loadEnvs(env)
-        val delphix: Delphix = Delphix(Http(env["delphixEngine"]?: ""))
-        val yaml: Yaml = Mapper().mapYaml(contents)
-        val runner: Runner = Runner(yaml, env, delphix)
-
-        try {
-            runner.run()
-        }
-        catch (e: Exception) {
-            System.err.println(e.message)
-            System.exit(0)
-        }
-
-      }
     }
 
     @JvmStatic
